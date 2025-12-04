@@ -1,7 +1,7 @@
 const express = require("express")
 const dotenv= require("dotenv")
 const path=require("path")
-const connectDB = require("./config/connectDb")
+const connectDB = require("./config/connectDb.js")
 
 const envPath = path.resolve(process.cwd(),"config",".env")
 

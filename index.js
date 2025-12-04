@@ -16,14 +16,7 @@ const PORT = process.env.PORT || 5000
 connectDB()
 
 app.use(
-  cors({
-    origin: [
-      "http://localhost:5173", // Local dev
-      "https://imharish05.github.io/Talrn--frontend", // GitHub Pages
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
+  cors()
 );
 
 app.get("/",(req,res)=>{

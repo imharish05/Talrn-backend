@@ -17,7 +17,7 @@ connectDB()
 
 app.use(express.json())
 app.use(cors({
-  origin: "http://localhost:5173", // frontend domain
+  origin: ["http://localhost:5173","https://imharish05.github.io/Talrn--frontend/"],
   methods: ["GET", "POST"],
   credentials: true
 }));

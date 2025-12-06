@@ -37,8 +37,6 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    await Developer.create({ authId: newUser._id });
-
     const token = jwt.sign(
       {
         id: newUser._id,

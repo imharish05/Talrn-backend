@@ -9,7 +9,6 @@ const developerSchema = joi.object({
   experience: joi.number().min(0).max(50).required(),
   description: joi.string().required(),
   joiningDate: joi.date().required(),
-  imageUrl: joi.string().uri().required(),
 });
 
 const updateSchema = joi.object({
@@ -19,7 +18,6 @@ const updateSchema = joi.object({
   experience: joi.number().min(0).max(50).optional(),
   description: joi.string().optional(),
   joiningDate: joi.date().optional(),
-  imageUrl: joi.string().uri().optional(),
 });
 
 const getAllDevelopers = async (req, res) => {
@@ -28,15 +26,11 @@ const getAllDevelopers = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = parseInt(page - 1) * limit;
 
-    const developers = await Developers.find()
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+    const developers = await Developers.find().skip(skip).limit(limit);
 
     const total = await Developers.countDocuments();
 
     res.status(200).json({ developers, total, hasMore: page * limit < total });
-    
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -61,21 +55,16 @@ const setDeveloper = async (req, res) => {
 
     const userId = req.user._id || req.user.id;
 
-    const developers = await Developers.findOneAndUpdate(
-      { authId: userId },
-      {
-        $set: {
-          name,
-          role,
-          techStack,
-          experience,
-          description,
-          joiningDate,
-          imageUrl,
-        },
-      },
-      { upsert: true, new: true, runValidators: true }
-    );
+    const developers = await Developers.create({
+      name,
+      role,
+      techStack,
+      experience,
+      description,
+      joiningDate,
+      imageUrl,
+      authId: userId,
+    });
 
     res.status(201).json(developers);
   } catch (err) {
@@ -103,16 +92,12 @@ const deleteDeveloperById = async (req, res) => {
 
     const developer = await Developers.findById(id);
 
-    console.log(developer);
-
     if (!developer)
       return res.status(400).json({ message: "User not in the db" });
 
     const authId = developer.authId;
 
     await Developers.findByIdAndDelete(id);
-
-    await Auth.findByIdAndDelete(authId);
 
     res.status(200).json({ message: "Deleted successfully" });
   } catch (err) {
@@ -129,11 +114,13 @@ const editDeveloperById = async (req, res) => {
 
     const { id } = req.params;
 
-    const data = req.body;
-
-    const updatedDeveloper = await Developers.findByIdAndUpdate(id, data, {
-      new: true,
-    });
+    const updatedDeveloper = await Developers.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      {
+        new: true,
+      }
+    );
 
     if (!updatedDeveloper)
       return res.status(404).json({ message: "Developer not Found" });

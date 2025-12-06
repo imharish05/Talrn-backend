@@ -9,6 +9,6 @@ router.get("/developers",protect,getAllDevelopers)
 router.post("/developers",protect,setDeveloper)
 router.get("/developer/:id",protect,getProfileById)
 router.delete("/developer/:id",protect,deleteDeveloperById)
-router.put("/developer/:id",protect,editDeveloperById)
+router.put("/developer/edit/:id",protect,editDeveloperById)
 
 module.exports = router;

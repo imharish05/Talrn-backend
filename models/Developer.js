@@ -8,7 +8,6 @@ const developerSchema = new mongoose.Schema({
     experience : {type : String},
     description : {type : String},
     joiningDate : {type : String},
-    imageUrl : {type : String}
 },{timestamps : true})
 
 const developers = mongoose.model("developer",developerSchema)

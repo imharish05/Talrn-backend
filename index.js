@@ -11,7 +11,6 @@ const cors = require("cors");
 
 const developerRoutes = require("./Routes/developerRoutes.js");
 const authRoutes = require("./Routes/authRoutes.js");
-const { METHODS } = require("http");
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,10 +19,9 @@ connectDB();
 app.use(express.json());
 
 const allowedOrigins = [
-  "http://localhost:5173/Talrn--frontend/",
+  "http://localhost:5173",
   "https://imharish05.github.io/Talrn--frontend/",
 ];
-
 app.use(
   cors({
     origin: (origin, callback) => {

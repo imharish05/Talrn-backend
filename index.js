@@ -20,7 +20,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://imharish05.github.io/Talrn--frontend/",
+  "https://imharish05.github.io",
 ];
 app.use(
   cors({
